@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ -d ${OPENSHIFT_DATA_DIR}/public/default ] && [ -d ${OPENSHIFT_DATA_DIR}/theme ] ; then
+  cd ${OPENSHIFT_DATA_DIR}/theme
+  git pull
+  cd
+  pelican ${OPENSHIFT_REPO_DIR}/data -o ${OPENSHIFT_DATA_DIR}/public/default -s ${OPENSHIFT_REPO_DIR}/conf/pelicanconf.py -t ${OPENSHIFT_DATA_DIR}/theme
+elif [ -d ${OPENSHIFT_DATA_DIR}/theme ] ; then
+  mkdir -p $OPENSHIFT_DATA_DIR/public/default
+  pelican ${OPENSHIFT_REPO_DIR}/data -o ${OPENSHIFT_DATA_DIR}/public/default -s ${OPENSHIFT_REPO_DIR}/conf/pelicanconf.py -t ${OPENSHIFT_DATA_DIR}/theme
+elif [ -d ${OPENSHIFT_DATA_DIR}/public/default ] ; then
+  git clone https://github.com/giulivo/pelican-svbhack $OPENSHIFT_DATA_DIR/theme
+  pelican ${OPENSHIFT_REPO_DIR}/data -o ${OPENSHIFT_DATA_DIR}/public/default -s ${OPENSHIFT_REPO_DIR}/conf/pelicanconf.py -t ${OPENSHIFT_DATA_DIR}/theme
+else
+  mkdir -p $OPENSHIFT_DATA_DIR/public/default
+  git clone https://github.com/giulivo/pelican-svbhack $OPENSHIFT_DATA_DIR/theme
+  pelican ${OPENSHIFT_REPO_DIR}/data -o ${OPENSHIFT_DATA_DIR}/public/default -s ${OPENSHIFT_REPO_DIR}/conf/pelicanconf.py -t ${OPENSHIFT_DATA_DIR}/theme
+fi

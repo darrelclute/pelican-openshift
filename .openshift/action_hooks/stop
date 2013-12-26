@@ -1,0 +1,5 @@
+#!/bin/bash
+
+httpd -f ${OPENSHIFT_DATA_DIR}/conf/httpd.conf -k stop
+
+exit 0
