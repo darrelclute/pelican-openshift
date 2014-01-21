@@ -1,18 +1,30 @@
 #!/bin/bash
 
-if [ -d ${OPENSHIFT_DATA_DIR}/public/default ] && [ -d ${OPENSHIFT_DATA_DIR}/theme ] ; then
+# Get latest version of the theme
+if [ -d ${OPENSHIFT_DATA_DIR}/theme ] ; then
   cd ${OPENSHIFT_DATA_DIR}/theme
   git pull
   cd
-  pelican ${OPENSHIFT_REPO_DIR}/data -o ${OPENSHIFT_DATA_DIR}/public/default -s ${OPENSHIFT_REPO_DIR}/conf/pelicanconf.py -t ${OPENSHIFT_DATA_DIR}/theme
-elif [ -d ${OPENSHIFT_DATA_DIR}/theme ] ; then
-  mkdir -p $OPENSHIFT_DATA_DIR/public/default
-  pelican ${OPENSHIFT_REPO_DIR}/data -o ${OPENSHIFT_DATA_DIR}/public/default -s ${OPENSHIFT_REPO_DIR}/conf/pelicanconf.py -t ${OPENSHIFT_DATA_DIR}/theme
-elif [ -d ${OPENSHIFT_DATA_DIR}/public/default ] ; then
-  git clone https://github.com/giulivo/pelican-svbhack $OPENSHIFT_DATA_DIR/theme
-  pelican ${OPENSHIFT_REPO_DIR}/data -o ${OPENSHIFT_DATA_DIR}/public/default -s ${OPENSHIFT_REPO_DIR}/conf/pelicanconf.py -t ${OPENSHIFT_DATA_DIR}/theme
+# Get theme as it does not presently exist
 else
-  mkdir -p $OPENSHIFT_DATA_DIR/public/default
-  git clone https://github.com/giulivo/pelican-svbhack $OPENSHIFT_DATA_DIR/theme
+  git clone https://github.com/giulivo/pelican-svbhack ${OPENSHIFT_DATA_DIR}/theme
+fi
+
+# Get the latest version of the pelican-plugins
+if [ -d ${OPENSHIFT_DATA_DIR}/pelican-plugins ] ; then
+  cd ${OPENSHIFT_DATA_DIR}/pelican-plugins
+  git pull
+  cd
+# Get the plugins as they do not presently exist
+else
+  git clone https://github.com/getpelican/pelican-plugins ${OPENSHIFT_DATA_DIR}/pelican-plugins
+fi
+
+# Generate site
+if [ -d ${OPENSHIFT_DATA_DIR}/public/default ] ; then
+  pelican ${OPENSHIFT_REPO_DIR}/data -o ${OPENSHIFT_DATA_DIR}/public/default -s ${OPENSHIFT_REPO_DIR}/conf/pelicanconf.py -t ${OPENSHIFT_DATA_DIR}/theme
+# Make directory as it does not exist then generate the site
+else
+  mkdir -p ${OPENSHIFT_DATA_DIR}/public/default
   pelican ${OPENSHIFT_REPO_DIR}/data -o ${OPENSHIFT_DATA_DIR}/public/default -s ${OPENSHIFT_REPO_DIR}/conf/pelicanconf.py -t ${OPENSHIFT_DATA_DIR}/theme
 fi
