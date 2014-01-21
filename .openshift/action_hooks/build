@@ -22,9 +22,11 @@ fi
 
 # Generate site
 if [ -d ${OPENSHIFT_DATA_DIR}/public/default ] ; then
-  pelican ${OPENSHIFT_REPO_DIR}/data -o ${OPENSHIFT_DATA_DIR}/public/default -s ${OPENSHIFT_REPO_DIR}/conf/pelicanconf.py -t ${OPENSHIFT_DATA_DIR}/theme
+  sed -e "s@OPENSHIFT_DATA_DIR@${OPENSHIFT_DATA_DIR}@g" ${OPENSHIFT_REPO_DIR}/conf/pelicanconf.py > ${OPENSHIFT_DATA_DIR}/conf/pelicanconf.py
+  pelican ${OPENSHIFT_REPO_DIR}/data -o ${OPENSHIFT_DATA_DIR}/public/default -s ${OPENSHIFT_DATA_DIR}/conf/pelicanconf.py -t ${OPENSHIFT_DATA_DIR}/theme
 # Make directory as it does not exist then generate the site
 else
   mkdir -p ${OPENSHIFT_DATA_DIR}/public/default
-  pelican ${OPENSHIFT_REPO_DIR}/data -o ${OPENSHIFT_DATA_DIR}/public/default -s ${OPENSHIFT_REPO_DIR}/conf/pelicanconf.py -t ${OPENSHIFT_DATA_DIR}/theme
+  sed -e "s@OPENSHIFT_DATA_DIR@${OPENSHIFT_DATA_DIR}@g" ${OPENSHIFT_REPO_DIR}/conf/pelicanconf.py > ${OPENSHIFT_DATA_DIR}/conf/pelicanconf.py
+  pelican ${OPENSHIFT_REPO_DIR}/data -o ${OPENSHIFT_DATA_DIR}/public/default -s ${OPENSHIFT_DATA_DIR}/conf/pelicanconf.py -t ${OPENSHIFT_DATA_DIR}/theme
 fi

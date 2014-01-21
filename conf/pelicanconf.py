@@ -5,6 +5,11 @@ import os
 import sys
 from datetime import date
 
+# Plugin settings, do not alter path without altering build script
+PLUGIN_PATH = 'OPENSHIFT_DATA_DIR/pelican-plugins'
+# Uncomment the following line to enable plugins, add or subtract as desired
+# PLUGINS = ['assets', 'sitemap', 'gravatar']
+
 # General Settings
 SITEURL = u'http://SITE-URL'
 SITENAME = u'SITE-NAME'
