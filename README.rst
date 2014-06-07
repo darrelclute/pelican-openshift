@@ -12,7 +12,7 @@ the template of building out your content.
 
 .. code-block:: bash
     
-    rhc app create -a pelican -t python-2.7
+    rhc app create -a pelican -t http://cartreflect-claytondev.rhcloud.com/github/gsterjov/openshift-advanced-python-cartridge
 
 Add this upstream repo
 
