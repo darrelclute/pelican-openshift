@@ -1,5 +1,6 @@
 #!/bin/bash
 
-httpd -f ${OPENSHIFT_DATA_DIR}/conf/httpd.conf -k start
+# Add commands you want to have executed on your OpenShift instance
+# when it starts.
 
 exit 0
