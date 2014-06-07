@@ -23,20 +23,24 @@ fi
 # Generate configuration files
 if [ -d ${OPENSHIFT_DATA_DIR}/conf ] ; then
   cp ${OPENSHIFT_REPO_DIR}/conf/*.conf ${OPENSHIFT_DATA_DIR}/conf
-  sed -i -e "s@OPENSHIFT_INTERNAL_IP@$OPENSHIFT_PYTHON_IP@g" -e "s@OPENSHIFT_HOMEDIR@$OPENSHIFT_HOMEDIR@g" -e "s@OPENSHIFT_DATA_DIR@$OPENSHIFT_DATA_DIR@g" -e "s@OPENSHIFT_LOG_DIR@$OPENSHIFT_PYTHON_LOG_DIR@g" -e "s@CONFIG_DIR@${OPENSHIFT_DATA_DIR}/conf@g" ${OPENSHIFT_DATA_DIR}/conf/*.conf
   sed -e "s@OPENSHIFT_DATA_DIR@${OPENSHIFT_DATA_DIR}@g" ${OPENSHIFT_REPO_DIR}/conf/pelicanconf.py > ${OPENSHIFT_DATA_DIR}/conf/pelicanconf.py
 else
   mkdir -p ${OPENSHIFT_DATA_DIR}/conf
   cp ${OPENSHIFT_REPO_DIR}/conf/*.conf ${OPENSHIFT_DATA_DIR}/conf
-  sed -i -e "s@OPENSHIFT_INTERNAL_IP@$OPENSHIFT_PYTHON_IP@g" -e "s@OPENSHIFT_HOMEDIR@$OPENSHIFT_HOMEDIR@g" -e "s@OPENSHIFT_DATA_DIR@$OPENSHIFT_DATA_DIR@g" -e "s@OPENSHIFT_LOG_DIR@$OPENSHIFT_PYTHON_LOG_DIR@g" -e "s@CONFIG_DIR@${OPENSHIFT_DATA_DIR}/conf@g" ${OPENSHIFT_DATA_DIR}/conf/*.conf
   sed -e "s@OPENSHIFT_DATA_DIR@${OPENSHIFT_DATA_DIR}@g" ${OPENSHIFT_REPO_DIR}/conf/pelicanconf.py > ${OPENSHIFT_DATA_DIR}/conf/pelicanconf.py
 fi
 
+# Prepare cache, if it doesn't exist
+if [ ! -d ${OPENSHIFT_REPO_DIR}/cache/ ] ; then
+  mkdir -p ${OPENSHIFT_REPO_DIR}/cache/
+fi
+
+
 # Generate site
-if [ -d ${OPENSHIFT_DATA_DIR}/public/default ] ; then
-  pelican ${OPENSHIFT_REPO_DIR}/data -o ${OPENSHIFT_DATA_DIR}/public/default -s ${OPENSHIFT_DATA_DIR}/conf/pelicanconf.py -t ${OPENSHIFT_DATA_DIR}/theme
+if [ -d ${OPENSHIFT_REPO_DIR}/public ] ; then
+  pelican ${OPENSHIFT_REPO_DIR}/data -o ${OPENSHIFT_DATA_DIR}/public -s ${OPENSHIFT_DATA_DIR}/conf/pelicanconf.py -t ${OPENSHIFT_DATA_DIR}/theme
 # Make directory as it does not exist then generate the site
 else
-  mkdir -p ${OPENSHIFT_DATA_DIR}/public/default
-  pelican ${OPENSHIFT_REPO_DIR}/data -o ${OPENSHIFT_DATA_DIR}/public/default -s ${OPENSHIFT_DATA_DIR}/conf/pelicanconf.py -t ${OPENSHIFT_DATA_DIR}/theme
+  mkdir -p ${OPENSHIFT_REPO_DIR}/public
+  pelican ${OPENSHIFT_REPO_DIR}/data -o ${OPENSHIFT_REPO_DIR}/public -s ${OPENSHIFT_DATA_DIR}/conf/pelicanconf.py -t ${OPENSHIFT_DATA_DIR}/theme
 fi
