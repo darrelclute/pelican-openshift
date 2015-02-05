@@ -26,8 +26,7 @@ The build script is setup so that you will pull the theme you are using via Git
 instead of maintaining it with your OpenShift repository.  To change themes
 edit the 'git clone' lines in .openshift/action_hooks/build.
 
-All other configuration data is stored in the conf directory, this includes
-Apache configuration and Pelican configuration.
+The Pelican configuration data is stored in the conf directory.
 
 The data directory is the expected location for all of your content, place your
 Markdown or reStructuredText sources here.
